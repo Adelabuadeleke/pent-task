@@ -6,6 +6,7 @@ module.exports.post_review = async(req, res) => {
     try{
         const review = await Review.create({ reviwer_username:req.user.username,owner:req.user._id,address, environment, landlords,amenities, review_comment});
         review.save();
+        return res.status(201).json(review);
     } catch(err) {
         console.log(err)
         res.status(500).json({message:'an error ocurred'});
