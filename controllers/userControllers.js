@@ -15,7 +15,7 @@ const handleErrors = (err) => {
     return 'user validation failed'
   }
 
-  return errors;
+  // return errors;
 }
 
 
