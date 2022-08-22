@@ -2,7 +2,7 @@ const Review = require('../models/Review');
 
 // post a review
 module.exports.post_review = async(req, res) => {
-    const { address, environment, landlords,ammenities, review_comment } = req.body;
+    const { address, environment, landlords,amenities, review_comment } = req.body;
     try{
         const review = await Review.create({ reviwer_username:req.user.username,owner:req.user._id,address, environment, landlords,amenities, review_comment});
         review.save();
