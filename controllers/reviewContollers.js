@@ -65,7 +65,7 @@ module.exports.get_review = async(req, res) => {
 // get reviews
 module.exports.get_review_most_helful = async(req, res) => {
     try {
-        const reviews = await Review.find({}).sort('helpful_count');
+        const reviews = await Review.find({}).sort('-helpful_count');
         if(!reviews) {
             return res.status(404).send('no reviews foun')
         } else {
@@ -97,8 +97,8 @@ module.exports.delete_review = async(req, res) => {
 module.exports.find_helpful = async(req, res) => {
     const _id = req.params.id
     try {
-        await Review.findOneAndUpdate({_id}, {$inc:{helpful_count:1}});
-        return res.status(200).json({message: 'we are glad you found this helpful '});
+        const review = await Review.findOneAndUpdate({_id}, {$inc:{helpful_count:1}});
+        return res.status(200).json({message: 'we are glad you found this helpful' , review});
     } catch(err) {
         console.log(err);
         return res.status(500).json({message: 'An error occurred'});
