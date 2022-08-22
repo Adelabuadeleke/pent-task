@@ -4,7 +4,7 @@ const Review = require('../models/Review');
 module.exports.post_review = async(req, res) => {
     const { address, environment, landlords,ammenities, review_comment } = req.body;
     try{
-        const review = await Review.create({ reviwer_username:req.user.username,owner:req.use._id,address, environment, landlords,ammenities, review_comment});
+        const review = await Review.create({ reviwer_username:req.user.username,owner:req.user._id,address, environment, landlords,ammenities, review_comment});
         review.save();
     } catch(err) {
         console.log(err)
