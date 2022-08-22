@@ -27,6 +27,7 @@ const { email, username, password} = req.body;
     // create user
     const user = await User.create({ email, username, password })
     await user.save()
+    const token = await user.generateAuthToken()
     res.status(201).json({ user, token, message: "you signed-up sucessfully!" })
   } catch(err) {
     console.log(err)
