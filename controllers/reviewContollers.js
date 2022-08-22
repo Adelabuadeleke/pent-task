@@ -30,7 +30,7 @@ module.exports.edit_review = async(req, res) => {
         const review_owner = review.owner;
         const current_user = req.user._id
         if(review_owner !== current_user) {
-            return res.status(401).json({message:`you can edit a review you didn't post`})
+            return res.status(401).json({message:`you can't edit a review you didn't post`})
         }
         updates.forEach((update) => {
         review[update] = req.body[update]
