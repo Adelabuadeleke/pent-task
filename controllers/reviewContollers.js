@@ -4,7 +4,7 @@ const Review = require('../models/Review');
 module.exports.post_review = async(req, res) => {
     const { address, environment, landlords,ammenities, review_comment } = req.body;
     try{
-        const review = await Review.create({ reviwer_username:req.user.username,owner:req.user._id,address, environment, landlords,ammenities, review_comment});
+        const review = await Review.create({ reviwer_username:req.user.username,owner:req.user._id,address, environment, landlords,amenities, review_comment});
         review.save();
     } catch(err) {
         console.log(err)
@@ -14,7 +14,7 @@ module.exports.post_review = async(req, res) => {
 // edit review
 module.exports.edit_review = async(req, res) => {
     const updates = Object.keys(req.body);
-    const allowedUpdates = ['environment', 'landlord', 'ammenities', 'review_coment', 'address'];
+    const allowedUpdates = ['environment', 'landlord', 'amenities', 'review_coment', 'address'];
     const isValidOperation = updates.every((updates) => {
         return allowedUpdates.includes(updates)
     })
