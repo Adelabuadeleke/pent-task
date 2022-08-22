@@ -50,7 +50,7 @@ userSchema.methods.generateAuthToken = async function() {
 }
 
 // static method to login user
-userSchema.statics.login = async function(phone, pin) {
+userSchema.statics.login = async function(email, password) {
   const user = await this.findOne({email});
 
   if(user){
