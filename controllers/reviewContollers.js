@@ -27,16 +27,20 @@ module.exports.edit_review = async(req, res) => {
     try {
         // console.log(updates)
         const review = await Review.findOne({ _id: req.params.id });
-        const review_owner = review.owner;
-        const current_user = req.user._id
-        if(review_owner !== current_user) {
+        const review_owner = String(review.owner);
+        const current_user = String(req.user._id);
+        // console.log(`${review_owner} = ${current_user}`);
+        if(review_owner === current_user) {
+            updates.forEach((update) => {
+            review[update] = req.body[update]
+            })
+            await review.save()
+            return res.status(200).json({message: 'succesfully updated user details!✔'})
+        } else  {
             return res.status(401).json({message:`you can't edit a review you didn't post`})
+
         }
-        updates.forEach((update) => {
-        review[update] = req.body[update]
-        })
-        await review.save()
-        return res.status(200).json({message: 'succesfully updated user details!✔'})
+       
     } catch (err){
         console.log(err);
         return res.status(500).json({message: 'An error occurred'});
@@ -47,6 +51,21 @@ module.exports.edit_review = async(req, res) => {
 module.exports.get_review = async(req, res) => {
     try {
         const reviews = await Review.find({});
+        if(!reviews) {
+            return res.status(404).send('no reviews foun')
+        } else {
+            return res.status(200).json(reviews);
+        }
+    } catch(err){
+        console.log(err);
+        return res.status(500).json({message: 'An error occurred'});
+    }
+}
+
+// get reviews
+module.exports.get_review_most_helful = async(req, res) => {
+    try {
+        const reviews = await Review.find({}).sort('helpful_count');
         if(!reviews) {
             return res.status(404).send('no reviews foun')
         } else {
@@ -79,6 +98,7 @@ module.exports.find_helpful = async(req, res) => {
     const _id = req.params.id
     try {
         await Review.findOneAndUpdate({_id}, {$inc:{helpful_count:1}});
+        return res.status(200).json({message: 'we are glad you found this helpful '});
     } catch(err) {
         console.log(err);
         return res.status(500).json({message: 'An error occurred'});
